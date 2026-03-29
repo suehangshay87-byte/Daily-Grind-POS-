@@ -36,21 +36,12 @@ export default function App() {
 
   const postToSheet = (data) => {
     if (!ENABLE_ONLINE_SYNC) return;
-   fetch(GOOGLE_SCRIPT_URL, {
-  method: "POST",
-  body: JSON.stringify({
-    time: newTransaction.time,
-    itemCode: newTransaction.itemCode,
-    itemNumber: newTransaction.itemNumber,
-    description: newTransaction.description,
-    price: newTransaction.price,
-    quantity: newTransaction.quantity,
-    subtotal: newTransaction.subtotal,
-    vat: newTransaction.vat,
-    total: newTransaction.total,
-    staff: newTransaction.staff
-  })
-});
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+  };
 
   const handleSubmit = () => {
     if (!selectedItem || quantity < 1) return;
@@ -62,12 +53,12 @@ export default function App() {
       itemCode: selectedItem.code,
       itemNumber: "CF" + Date.now(),
       description: selectedItem.name,
-      price: selectedItem.price,
-      quantity,
-      subtotal,
-      vat,
-      total: totalPrice,
-      staff
+      price: Number(selectedItem.price),
+      quantity: Number(quantity),
+      subtotal: Number(subtotal),
+      vat: Number(vat),
+      total: Number(totalPrice),
+      staff: String(staff)
     };
 
     setTransactions((prev) => [...prev, newTransaction]);
@@ -80,8 +71,8 @@ export default function App() {
 
     for (let i = 0; i < 100; i++) {
       const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
-
       const qty = randomBetween(1, 3);
+
       const sub = item.price * qty;
       const vatAmt = sub * 0.16;
       const total = sub + vatAmt;
@@ -103,7 +94,7 @@ export default function App() {
         quantity: qty,
         subtotal: sub,
         vat: vatAmt,
-        total,
+        total: total,
         staff: STAFF[randomBetween(0, STAFF.length - 1)]
       };
 
@@ -116,7 +107,9 @@ export default function App() {
   };
 
   const totalRevenue = transactions.reduce((sum, t) => sum + t.total, 0);
-  const averageSale = transactions.length ? (totalRevenue / transactions.length).toFixed(2) : 0;
+  const averageSale = transactions.length
+    ? (totalRevenue / transactions.length).toFixed(2)
+    : 0;
 
   const staffStats = {};
   transactions.forEach((t) => {
@@ -128,23 +121,45 @@ export default function App() {
     <div style={{ fontFamily: "Arial", background: "#f4f4f4", padding: "30px" }}>
       <div style={{ maxWidth: "900px", margin: "auto", background: "white", padding: "30px", borderRadius: "12px" }}>
 
-        <h1 style={{ textAlign: "center", marginBottom: "30px" }}>☕ The Daily Grind Coffee Co.</h1>
+        <h1 style={{ textAlign: "center", marginBottom: "30px" }}>
+          ☕ The Daily Grind Coffee Co.
+        </h1>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
 
           <div>
             <h3>Point of Sale</h3>
 
-            <select style={{ width: "100%", padding: "10px", marginBottom: "10px" }} value={selectedItem.code} onChange={(e) => setSelectedItem(ITEMS.find(i => i.code === e.target.value))}>
-              {ITEMS.map(item => (
-                <option key={item.code} value={item.code}>{item.name} - ${item.price}</option>
+            <select
+              style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+              value={selectedItem.code}
+              onChange={(e) =>
+                setSelectedItem(ITEMS.find((i) => i.code === e.target.value))
+              }
+            >
+              {ITEMS.map((item) => (
+                <option key={item.code} value={item.code}>
+                  {item.name} - ${item.price}
+                </option>
               ))}
             </select>
 
-            <input style={{ width: "100%", padding: "10px", marginBottom: "10px" }} type="number" value={quantity} min={1} onChange={(e) => setQuantity(Number(e.target.value))} />
+            <input
+              style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+              type="number"
+              value={quantity}
+              min={1}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+            />
 
-            <select style={{ width: "100%", padding: "10px", marginBottom: "10px" }} value={staff} onChange={(e) => setStaff(e.target.value)}>
-              {STAFF.map(s => <option key={s}>{s}</option>)}
+            <select
+              style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+              value={staff}
+              onChange={(e) => setStaff(e.target.value)}
+            >
+              {STAFF.map((s) => (
+                <option key={s}>{s}</option>
+              ))}
             </select>
 
             <div style={{ background: "#fafafa", padding: "15px", borderRadius: "8px", marginBottom: "15px" }}>
@@ -154,7 +169,9 @@ export default function App() {
             </div>
 
             <button onClick={handleSubmit}>Submit</button>
-            <button onClick={generateBulk} style={{ marginLeft: "10px" }}>Generate Realistic Data</button>
+            <button onClick={generateBulk} style={{ marginLeft: "10px" }}>
+              Generate Realistic Data
+            </button>
           </div>
 
           <div>
@@ -166,7 +183,9 @@ export default function App() {
                 <p>Total: ${receipt.total.toFixed(2)}</p>
                 <p>Staff: {receipt.staff}</p>
               </div>
-            ) : <p>No transaction yet</p>}
+            ) : (
+              <p>No transaction yet</p>
+            )}
           </div>
 
         </div>
@@ -180,9 +199,10 @@ export default function App() {
 
         <h4>Staff Performance</h4>
         {Object.entries(staffStats).map(([name, total]) => (
-          <p key={name}>{name}: ${total.toFixed(2)}</p>
+          <p key={name}>
+            {name}: ${total.toFixed(2)}
+          </p>
         ))}
-
       </div>
     </div>
   );
