@@ -37,12 +37,12 @@ export default function App() {
   const postToSheet = (data) => {
     if (!ENABLE_ONLINE_SYNC) return;
     fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    }).catch(() => {});
-  };
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(data)
+});
 
   const handleSubmit = () => {
     if (!selectedItem || quantity < 1) return;
