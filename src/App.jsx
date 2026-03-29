@@ -36,12 +36,20 @@ export default function App() {
 
   const postToSheet = (data) => {
     if (!ENABLE_ONLINE_SYNC) return;
-    fetch(GOOGLE_SCRIPT_URL, {
+   fetch(GOOGLE_SCRIPT_URL, {
   method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(data)
+  body: JSON.stringify({
+    time: newTransaction.time,
+    itemCode: newTransaction.itemCode,
+    itemNumber: newTransaction.itemNumber,
+    description: newTransaction.description,
+    price: newTransaction.price,
+    quantity: newTransaction.quantity,
+    subtotal: newTransaction.subtotal,
+    vat: newTransaction.vat,
+    total: newTransaction.total,
+    staff: newTransaction.staff
+  })
 });
 
   const handleSubmit = () => {
