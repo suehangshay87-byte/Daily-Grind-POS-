@@ -12,7 +12,7 @@ const ITEMS = [
 const STAFF = ["Jenelia", "Juanita", "Malisa"];
 
 const ENABLE_ONLINE_SYNC = true;
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvF2WP7xtdk-3rY4KovU6S1X4gJJHutUTQKHy_VRA0z-L24Cy95Hm_Tf5iRi6i9BTt/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4ftm0kxxpEP0Z-WBcRxrBQa7WZEX7oMhwRzCIO2B0amvvikXiwG6GipTBhKTPFgR1/exec";
 
 function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
