@@ -103,7 +103,7 @@ export default function App() {
     }
 
     setTransactions((prev) => [...prev, ...batch]);
-    alert("Realistic transactions generated!");
+    alert("Test data generated!");
   };
 
   const totalRevenue = transactions.reduce((sum, t) => sum + t.total, 0);
@@ -170,7 +170,7 @@ export default function App() {
 
             <button onClick={handleSubmit}>Submit</button>
             <button onClick={generateBulk} style={{ marginLeft: "10px" }}>
-              Generate Realistic Data
+              Generate Test Data
             </button>
           </div>
 
